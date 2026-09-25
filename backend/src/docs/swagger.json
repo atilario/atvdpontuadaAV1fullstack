@@ -1,0 +1,183 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API TOPSIS - Plataforma de Energia Renovável e Vulnerabilidade Social",
+    "version": "1.0.0",
+    "description": "Especificação da API RESTful desenvolvida conforme as normas ISO/IEC 12207 e ISO/IEC 25010 para a disciplina de Desenvolvimento Web (Engenharia da Computação - SENAI CIMATEC).",
+    "contact": {
+      "name": "Átila Leite",
+      "email": "atila@cimatec.br"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001",
+      "description": "Servidor de Desenvolvimento Local"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Healthcheck da API",
+        "responses": {
+          "200": { "description": "Serviço operacional" }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Autenticar usuário e obter token JWT",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "example": "admin@cimatec.br" },
+                  "senha": { "type": "string", "example": "admin123" }
+                },
+                "required": ["email", "senha"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Autenticação bem sucedida com retorno do token JWT" },
+          "401": { "description": "Credenciais inválidas" }
+        }
+      }
+    },
+    "/api/municipios": {
+      "get": {
+        "summary": "Listar todos os municípios e comunidades cadastradas",
+        "responses": {
+          "200": { "description": "Lista de municípios" }
+        }
+      },
+      "post": {
+        "summary": "Cadastrar novo município",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "type": "string" },
+                  "uf": { "type": "string" },
+                  "populacao": { "type": "integer" },
+                  "idh": { "type": "number" },
+                  "latitude": { "type": "number" },
+                  "longitude": { "type": "number" }
+                },
+                "required": ["nome", "uf", "latitude", "longitude"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Município criado" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/api/criterios": {
+      "get": {
+        "summary": "Listar critérios de avaliação TOPSIS",
+        "responses": {
+          "200": { "description": "Lista de critérios com pesos e tipos" }
+        }
+      }
+    },
+    "/api/criterios/pesos": {
+      "put": {
+        "summary": "Atualizar pesos dos critérios TOPSIS (soma = 1.0)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "pesos": [
+                    { "id": 1, "peso": 0.20 },
+                    { "id": 2, "peso": 0.20 },
+                    { "id": 3, "peso": 0.15 },
+                    { "id": 4, "peso": 0.25 },
+                    { "id": 5, "peso": 0.20 }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Pesos atualizados com sucesso" },
+          "400": { "description": "Soma dos pesos diferente de 1.0" }
+        }
+      }
+    },
+    "/api/topsis/executar": {
+      "post": {
+        "summary": "Executar o cálculo TOPSIS e gerar ranking de vulnerabilidade",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "pesosCustomizados": { "type": "array", "items": { "type": "number" } },
+                  "salvarNoHistorico": { "type": "boolean", "default": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Ranking calculado e coeficientes Ci gerados" }
+        }
+      }
+    },
+    "/api/topsis/simulacoes": {
+      "get": {
+        "summary": "Listar histórico de simulações realizadas",
+        "responses": {
+          "200": { "description": "Histórico de simulações" }
+        }
+      }
+    },
+    "/api/relatorios/simulacoes/{id}/csv": {
+      "get": {
+        "summary": "Exportar resultado do ranking TOPSIS em formato CSV",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Arquivo CSV para download",
+            "content": {
+              "text/csv": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}
