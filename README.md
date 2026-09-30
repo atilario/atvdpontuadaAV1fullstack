@@ -38,9 +38,11 @@ A arquitetura do software atende a todos os critérios de avaliação de **Engen
 
 ```text
 atvdpontuadaAV1/
-├── docker-compose.yml              # Orquestração do PostgreSQL no Docker
+├── docker-compose.yml              # Orquestração de PostgreSQL, Backend e Frontend no Docker
 ├── README.md                       # Documentação executiva completa
 ├── backend/
+│   ├── Dockerfile                  # Containerização da API Node.js
+│   ├── .dockerignore
 │   ├── .env                        # Variáveis de ambiente da API e DB
 │   ├── .env.example                # Template de configuração
 │   ├── package.json                # Dependências e scripts de teste
@@ -66,6 +68,8 @@ atvdpontuadaAV1/
 │       └── integration/
 │           └── api.test.js         # Testes de integração de rotas com Supertest
 ├── frontend/
+│   ├── Dockerfile                  # Containerização do SPA React/Vite
+│   ├── .dockerignore
 │   ├── package.json                # Dependências do cliente Vite/React
 │   ├── vite.config.js              # Configuração do Vite
 │   ├── tailwind.config.js          # Design system e tema de cores
@@ -107,42 +111,59 @@ atvdpontuadaAV1/
 ## 4. Instruções de Instalação e Execução
 
 ### Pré-requisitos
-- **Docker Desktop** instalado e em execução (versão 20+).
-- **Node.js** instalado (versão 18 ou superior).
+- **Docker** e **Docker Compose** instalados (versão 20+).
+- *(Opcional)* **Node.js** (versão 18+) caso queira executar na máquina host sem Docker.
 
 ---
 
-### Passo 1: Subir o Banco de Dados no Docker (1 comando)
-Na pasta do projeto (`atvdpontuadaAV1`):
+### Opção A: Execução Completa com Docker Compose (1 comando)
+Na raiz do projeto (`atvdpontuadaAV1`):
+```bash
+docker compose up --build
+```
+Este comando único orquestra todo o ecossistema automaticamente:
+1. **PostgreSQL 16:** Inicia o banco e executa as migrações/seeds de `backend/migrations/init.sql`.
+2. **Backend (Node.js/Express):** Aguarda o banco ficar saudável (`service_healthy`), instala dependências e inicia a API REST.
+3. **Frontend (React 19/Vite):** Instala dependências e inicia o servidor Vite na porta `5173`.
+
+Acesse no seu navegador:
+- **Painel Web (Frontend):** `http://localhost:5173`
+- **Swagger UI (API Docs):** `http://localhost:3001/api-docs`
+- **Healthcheck API:** `http://localhost:3001/api/health`
+
+Para rodar em segundo plano:
 ```bash
 docker compose up -d
 ```
-O PostgreSQL 16 será iniciado e o script de inicialização `backend/migrations/init.sql` criará automaticamente todas as tabelas e fará a carga dos dados iniciais (usuários, critérios oficiais C1-C5 e municípios do roteiro).
+Para parar todos os serviços:
+```bash
+docker compose down
+```
 
 ---
 
-### Passo 2: Executar o Backend
+### Opção B: Execução Manual / Híbrida
+
+#### Passo 1: Subir o Banco de Dados no Docker
+```bash
+docker compose up -d postgres
+```
+
+#### Passo 2: Executar o Backend
 Em um terminal, acesse a pasta `backend`:
 ```bash
 cd backend
 npm install
 npm start
 ```
-O servidor estará ativo em:
-- **API URL:** `http://localhost:3001/api`
-- **Swagger UI:** `http://localhost:3001/api-docs`
-- **Healthcheck:** `http://localhost:3001/api/health`
 
----
-
-### Passo 3: Executar o Frontend
+#### Passo 3: Executar o Frontend
 Em outro terminal, acesse a pasta `frontend`:
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Acesse no seu navegador: `http://localhost:5173`
 
 ---
 
