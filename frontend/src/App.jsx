@@ -118,7 +118,7 @@ export default function App() {
               </h1>
               <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
                 Mensuração da vulnerabilidade social e priorização de investimentos em energia renovável.
-                Algoritmo de proximidade com soluções ideais positiva ($A^+$) e negativa ($A^-$).
+                Algoritmo de proximidade com soluções ideais positiva (<i>A</i><sup>+</sup>) e negativa (<i>A</i><sup>-</sup>).
               </p>
             </div>
 

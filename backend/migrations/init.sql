@@ -2,8 +2,6 @@
 -- Plataforma de Energia Renovável e Vulnerabilidade Social com TOPSIS
 -- Universidade SENAI CIMATEC - Engenharia da Computação
 
--- Extensão PostGIS (caso o container tenha suporte, senão ignora com aviso)
-CREATE EXTENSION IF NOT EXISTS postgis;
 
 -- 1. Tabela de Usuários (RNF04 - Autenticação JWT)
 CREATE TABLE IF NOT EXISTS usuarios (
