@@ -4,7 +4,7 @@
 **Curso:** Engenharia da Computação (6º Semestre)  
 **Disciplina:** Desenvolvimento Web  
 **Docente:** Prof. Me. Celso Barreto  
-**Discente:** Átila Leite  
+**Equipe:** Átila Mascarenhas, Heitor Barreto, Camila Rocha e Fernanda Ribeiro  
 **Normas de Referência:** ISO/IEC 12207 (Processos do Ciclo de Vida do Software) e ISO/IEC 25010 (Modelos de Qualidade de Produto)  
 **Objetivo de Desenvolvimento Sustentável:** ODS 7 ONU — Energia Limpa e Acessível  
 

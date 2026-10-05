@@ -7,6 +7,8 @@ services:
       POSTGRES_USER: ${DB_USER:-postgres}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
       POSTGRES_DB: ${DB_NAME:-topsis_energia}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+      PGCLIENTENCODING: UTF8
     ports:
       - "${DB_PORT:-5432}:5432"
     volumes:
@@ -34,6 +36,9 @@ services:
       JWT_SECRET: ${JWT_SECRET:-super_secret_topsis_cimatec_key_2026}
       JWT_EXPIRES_IN: 24h
       NODE_ENV: development
+      PGCLIENTENCODING: UTF8
+      LANG: C.UTF-8
+      LC_ALL: C.UTF-8
     ports:
       - "3001:3001"
     volumes:

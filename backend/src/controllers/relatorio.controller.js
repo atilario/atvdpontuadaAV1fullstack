@@ -32,7 +32,7 @@ class RelatorioController {
         r.longitude,
       ]);
 
-      const csvContent = [colunas.join(','), ...linhas.map((l) => l.join(','))].join('\n');
+      const csvContent = '\uFEFF' + [colunas.join(','), ...linhas.map((l) => l.join(','))].join('\n');
 
       res.setHeader('Content-Type', 'text/csv; charset=utf-8');
       res.setHeader('Content-Disposition', `attachment; filename="ranking_topsis_simulacao_${id}.csv"`);

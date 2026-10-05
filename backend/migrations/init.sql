@@ -2,6 +2,7 @@
 -- Plataforma de Energia Renovável e Vulnerabilidade Social com TOPSIS
 -- Universidade SENAI CIMATEC - Engenharia da Computação
 
+SET client_encoding = 'UTF8';
 
 -- 1. Tabela de Usuários (RNF04 - Autenticação JWT)
 CREATE TABLE IF NOT EXISTS usuarios (
@@ -77,7 +78,9 @@ INSERT INTO usuarios (nome, email, senha_hash, perfil)
 VALUES 
 ('Administrador CIMATEC', 'admin@cimatec.br', '$2a$10$xu6XlMFBdpJpv3Kfo/0AlePRXSDWucyWhxFq5OffHUYBZlX5pI57u', 'admin'),
 ('Pesquisador de Energia', 'pesquisador@cimatec.br', '$2a$10$xu6XlMFBdpJpv3Kfo/0AlePRXSDWucyWhxFq5OffHUYBZlX5pI57u', 'pesquisador')
-ON CONFLICT (email) DO NOTHING;
+ON CONFLICT (email) DO UPDATE SET
+    nome = EXCLUDED.nome,
+    perfil = EXCLUDED.perfil;
 
 -- Critérios Oficiais (Capítulo 7.1 do Roteiro TOPSIS)
 INSERT INTO criterios (codigo, nome, descricao, tipo, peso, unidade) VALUES
@@ -86,7 +89,12 @@ INSERT INTO criterios (codigo, nome, descricao, tipo, peso, unidade) VALUES
 ('C3', 'Renda Per Capita', 'Renda domiciliar média per capita municipal', 'beneficio', 0.1500, 'R$'),
 ('C4', 'Tarifa Média de Energia', 'Tarifa média de energia elétrica cobrada pela concessionária local', 'custo', 0.2500, 'R$/kWh'),
 ('C5', 'Irradiação Solar Diária', 'Índice de radiação solar global incidente', 'beneficio', 0.2000, 'kWh/m²/dia')
-ON CONFLICT (codigo) DO NOTHING;
+ON CONFLICT (codigo) DO UPDATE SET
+    nome = EXCLUDED.nome,
+    descricao = EXCLUDED.descricao,
+    tipo = EXCLUDED.tipo,
+    peso = EXCLUDED.peso,
+    unidade = EXCLUDED.unidade;
 
 -- Municípios do Exemplo de Validação Numérica do Roteiro (Capítulo 7.3)
 INSERT INTO municipios (id, nome, uf, populacao, idh, latitude, longitude) VALUES
@@ -97,7 +105,13 @@ INSERT INTO municipios (id, nome, uf, populacao, idh, latitude, longitude) VALUE
 (5, 'Sobradinho', 'BA', 23233, 0.631, -9.4533, -40.8267),
 (6, 'Caetité', 'BA', 52306, 0.665, -14.0694, -42.4861),
 (7, 'Bom Jesus da Lapa', 'BA', 70618, 0.666, -13.2550, -43.4231)
-ON CONFLICT (id) DO NOTHING;
+ON CONFLICT (id) DO UPDATE SET
+    nome = EXCLUDED.nome,
+    uf = EXCLUDED.uf,
+    populacao = EXCLUDED.populacao,
+    idh = EXCLUDED.idh,
+    latitude = EXCLUDED.latitude,
+    longitude = EXCLUDED.longitude;
 
 SELECT setval('municipios_id_seq', (SELECT MAX(id) FROM municipios));
 

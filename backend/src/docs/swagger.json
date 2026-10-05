@@ -5,8 +5,7 @@
     "version": "1.0.0",
     "description": "Especificação da API RESTful desenvolvida conforme as normas ISO/IEC 12207 e ISO/IEC 25010 para a disciplina de Desenvolvimento Web (Engenharia da Computação - SENAI CIMATEC).",
     "contact": {
-      "name": "Átila Leite",
-      "email": "atila@cimatec.br"
+      "name": "Átila Mascarenhas, Heitor Barreto, Camila Rocha e Fernanda Ribeiro"
     }
   },
   "servers": [

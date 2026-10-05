@@ -10,6 +10,89 @@
   }
 }
 
+/* Correções essenciais para Leaflet com Tailwind CSS */
+.leaflet-container {
+  font-family: inherit;
+}
+
+.leaflet-container img {
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.leaflet-tile {
+  visibility: inherit !important;
+}
+
+.leaflet-tile-loaded {
+  opacity: 1 !important;
+}
+
+.leaflet-pane {
+  z-index: 10 !important;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 20 !important;
+}
+
+/* Customização dos popups Leaflet para tema dark moderno e glassmorphism */
+.leaflet-popup-content-wrapper {
+  background: rgba(15, 23, 42, 0.95) !important;
+  color: #f8fafc !important;
+  border: 1px solid rgba(51, 65, 85, 0.9) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 0 20px rgba(16, 185, 129, 0.15) !important;
+  padding: 2px !important;
+}
+
+.leaflet-popup-tip {
+  background: rgba(15, 23, 42, 0.95) !important;
+  border: 1px solid rgba(51, 65, 85, 0.9) !important;
+}
+
+.leaflet-popup-close-button {
+  color: #94a3b8 !important;
+  padding: 6px !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #ffffff !important;
+}
+
+/* Tooltips flutuantes ao passar o mouse */
+.leaflet-tooltip.custom-map-tooltip {
+  background: rgba(15, 23, 42, 0.94) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(71, 85, 105, 0.8) !important;
+  border-radius: 10px !important;
+  color: #f8fafc !important;
+  font-family: inherit !important;
+  font-size: 11px !important;
+  box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.5) !important;
+  padding: 4px 10px !important;
+}
+
+.leaflet-tooltip-top:before {
+  border-top-color: rgba(15, 23, 42, 0.94) !important;
+}
+
+.leaflet-tooltip-bottom:before {
+  border-bottom-color: rgba(15, 23, 42, 0.94) !important;
+}
+
+/* Efeito de relevo e sombra nos marcadores */
+.leaflet-interactive {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.leaflet-interactive:hover {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+}
+
 /* Custom scrollbar para tabelas analíticas */
 ::-webkit-scrollbar {
   width: 8px;
